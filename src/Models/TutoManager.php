@@ -82,6 +82,23 @@ class TutoManager extends Manager
     public function update(Tuto $tuto){
 
        // Modification d'un tuto en BDD
+       // Connexion à la BDD
+       $dbh = static::connectDb();
+
+       // Requête
+       $sth = $dbh->prepare('UPDATE tutos set (title = :title, description = :description)');
+       $title = $tuto->getTitle();
+       $sth->bindParam(':title', $title);
+       $description = $tuto->getDescription();
+       $sth->bindParam(':description', $description);
+       $createdAt = $tuto->getCreatedAt();
+       $sth->bindParam(':createdAt', $createdAt);
+       $sth->execute();
+
+       // Retour
+       $id = $dbh->lastInsertId();
+       $tuto->setId($id);
+       return $tuto;
 
     }
 

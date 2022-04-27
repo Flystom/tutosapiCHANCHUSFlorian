@@ -29,6 +29,35 @@ switch(true) {
 
         break;
 
+    case preg_match('#^tutos((\?)|$)#', $uri) && $method == 'POST':
+
+        $controller = new tutoController();
+
+        return $controller->add();
+
+        break;
+        
+    case preg_match('#^tutos/(\d+)$#', $uri, $matches) && $method == 'PATCH':
+
+        $id = $matches[1];
+
+        $controller = new tutoController();
+
+        return $controller->update($id);
+
+        break;
+
+    case preg_match('#^tutos/(\d+)$#', $uri, $matches) && $method == 'DELETE':
+
+        $id = $matches[1];
+
+        $controller = new tutoController();
+
+        return $controller->delete($id);
+
+        break;
+
+
     default:
     
     http_response_code(404);
