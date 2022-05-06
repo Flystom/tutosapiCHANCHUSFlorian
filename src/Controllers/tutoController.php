@@ -35,6 +35,18 @@ class tutoController extends abstractController
         return $this->jsonResponse($tutos, 200);
     }
 
+    
+    public function indexPagination($page)
+    {
+        $tutos = [];
+
+        $manager = new TutoManager();
+
+        $tutos = $manager->findPagination($page);
+
+        return $this->jsonResponse($tutos, 200);
+    }
+
     public function add()
     {
 

@@ -57,6 +57,45 @@ class TutoManager extends Manager
 
     }
 
+    public function findPagination($page)
+    {
+
+        // Connexion à la BDD
+        $dbh = static::connectDb();
+
+        // Requête
+        $sth = $dbh->prepare('SELECT * FROM tutos');
+        $sth->execute();
+
+        $tutos = [];
+
+        while($row = $sth->fetch(\PDO::FETCH_ASSOC)){
+
+            $tuto = new Tuto();
+            $tuto->setId($row['id']);
+            $tuto->setTitle($row['title']);
+            $tuto->setDescription($row['description']);
+            $tuto->setCreatedAt($row["createdAt"]);
+            $tutos[] = $tuto;
+            $tutosPage = [];
+
+            for ($i=0; $i <= 4; $i++)
+            {
+                $idPage = ($page - 1)*5+$i;
+                if(!isset($tutos[$idPage]))
+                {
+                    break;
+                }
+                $tutosPage[$i] = $tutos[$idPage];
+            }
+        }
+
+        return $tutosPage;
+
+    }
+
+
+
     public function add(Tuto $tuto){
 
         // Connexion à la BDD
